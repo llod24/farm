@@ -7,6 +7,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.farm.repository.FarmRepository;
+import com.farm.repository.MemberRepository;
 
 @Configuration
 public class DbConfig {
@@ -36,5 +37,10 @@ public class DbConfig {
 	@Bean
 	public FarmRepository farmRepository() {
 		return new FarmRepository(dataSource());
+	}
+	
+	@Bean
+	public MemberRepository memberRepository() {
+		return new MemberRepository(dataSource());
 	}
 }
