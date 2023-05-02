@@ -22,6 +22,8 @@ version="3.1">
 	  <param-value>
 	    com.farm.config.MvcConfig
 	    com.farm.config.ControllerConfig
+	    com.farm.config.Dbconfig
+	    com.farm.config.SecurityConfig
 	  </param-value>
 	</init-param>
 	<load-on-startup>1</load-on-startup>
