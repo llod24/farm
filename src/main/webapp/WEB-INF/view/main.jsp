@@ -7,6 +7,7 @@
 </head>
 <body>
 	<a href="/farm/register"> register </a>
+	<a href="/farm/login"> login </a>	
 	<a href="/farm/add"> add </a>
 	<a href="/farm/work"> load </a>
 </body>

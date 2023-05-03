@@ -18,4 +18,6 @@ public class MemberService {
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
 		memberRepository.addMember(member);
 	}
+	
+	
 }

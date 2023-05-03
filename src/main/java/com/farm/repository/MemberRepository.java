@@ -2,6 +2,7 @@ package com.farm.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,5 +29,33 @@ public class MemberRepository {
 			return pstmt;
 		});
 		
+	}
+	
+	public Member IsRight(Member member) {
+		String sql = "select email, password from member where email = ?";
+		try {
+		return template.queryForObject(
+				sql,
+				(ResultSet rs, int rowNum) -> {
+						Member newMember = new Member(
+							rs.getString("email"),
+							rs.getString("password"));
+						return newMember;
+					}, member.getEmail());
+		}catch(Exception e) {
+			//TODO 에러처리하기
+			Member Emember = new Member("error", "error");
+			return Emember;
+		}
+	}
+	
+	public int getWorkload(String date) {
+		String sql = "select sum(workload) from work where workDate = ?";
+		try {
+	        int workload = template.queryForObject(sql, Integer.class, date);
+	        return workload;
+	    } catch (Exception e) {
+	        return 0;
+	    }
 	}
 }
