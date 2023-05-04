@@ -2,13 +2,15 @@ package com.farm.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.farm.domain.Member;
+import com.farm.domain.MemberDetails;
 
 @Repository
 public class MemberRepository {
@@ -31,21 +33,16 @@ public class MemberRepository {
 		
 	}
 	
-	public Member IsRight(Member member) {
-		String sql = "select email, password from member where email = ?";
+	public MemberDetails findByEmail(String email) {
+		String sql = "select * from member where email = ?";
+        RowMapper<Member> rowMapper = new BeanPropertyRowMapper<>(Member.class);
 		try {
-		return template.queryForObject(
-				sql,
-				(ResultSet rs, int rowNum) -> {
-						Member newMember = new Member(
-							rs.getString("email"),
-							rs.getString("password"));
-						return newMember;
-					}, member.getEmail());
+			Member newMember = template.queryForObject(sql, new Object[]{email}, rowMapper);
+	        return new MemberDetails(newMember);
 		}catch(Exception e) {
 			//TODO 에러처리하기
-			Member Emember = new Member("error", "error");
-			return Emember;
+			return  new MemberDetails(new Member("error", "error"));
+			
 		}
 	}
 	

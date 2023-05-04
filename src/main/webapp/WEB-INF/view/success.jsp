@@ -8,5 +8,6 @@
 </head>
 <body>
 	<p>login success </p>
+	<a href="/farm"></a>
 </body>
 </html>

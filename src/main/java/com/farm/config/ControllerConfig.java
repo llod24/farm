@@ -10,7 +10,7 @@ import com.farm.controller.MemberController;
 import com.farm.repository.FarmRepository;
 import com.farm.repository.MemberRepository;
 import com.farm.service.FarmService;
-import com.farm.service.LoginService;
+import com.farm.service.MyUserDetailsService;
 import com.farm.service.MemberService;
 
 @Configuration
@@ -49,9 +49,10 @@ public class ControllerConfig {
 	}
 	
 	@Bean
-	public LoginService loginService() {
-		return new LoginService();
+	public MyUserDetailsService myUserDetailsService() {
+		return new MyUserDetailsService();
 	}
+	
 	
 	
 	
