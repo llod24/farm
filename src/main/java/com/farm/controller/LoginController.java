@@ -47,7 +47,6 @@ public class LoginController {
             // Authentication 객체 생성
             Authentication auth = new UsernamePasswordAuthenticationToken(email, password);
             // 커스텀 인증 처리를 위해 AuthenticationManager에 CustomAuthenticationProvider 등록
-            authenticationManager = new ProviderManager(customAuthenticationProvider);
             // AuthenticationManager를 이용하여 인증 처리
             Authentication result = authenticationManager.authenticate(auth);	
             // 인증 성공시, SecurityContext에 Authentication 정보 저장
