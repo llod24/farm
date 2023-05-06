@@ -1,8 +1,10 @@
 package com.farm.domain;
 
 import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class MemberDetails implements UserDetails {
@@ -15,8 +17,8 @@ public class MemberDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO: 권한 정보 반환
-        return null;
+    	String role = member.getRole();
+        return Collections.singleton(new SimpleGrantedAuthority(role));
     }
 
     @Override

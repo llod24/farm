@@ -5,8 +5,15 @@ public class Member {
 	 private String username;
 	 private String password;
 	 private String email;
+	 private String role;
 
-    public Member(String username, String password, String email) {
+    public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	public Member(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
