@@ -2,11 +2,10 @@ package com.farm.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.List;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.farm.domain.Member;
@@ -34,16 +33,19 @@ public class MemberRepository {
 	}
 	
 	public MemberDetails findByEmail(String email) {
-		String sql = "select * from member where email = ?";
-        RowMapper<Member> rowMapper = new BeanPropertyRowMapper<>(Member.class);
-		try {
-			Member newMember = template.queryForObject(sql, new Object[]{email}, rowMapper);
-	        return new MemberDetails(newMember);
-		}catch(Exception e) {
-			//TODO 에러처리하기
-			return  new MemberDetails(new Member("error", "error"));
-			
-		}
+		String sql = "SELECT u.id, u.password, u.email, r.name as role " +
+                "FROM users u " +
+                "JOIN user_roles ur ON u.id = ur.user_id " +
+                "JOIN roles r ON ur.role_id = r.id " +
+                "WHERE u.email = ?";
+		List<MemberDetails> users = template.query(sql, new Object[]{email}, (rs, rowNum) ->
+           new MemberDetails(
+               rs.getLong("id"),
+               rs.getString("password"),
+               rs.getString("email"),
+               Collection<? extends GrantedAuthority> authorities(rs.getString("role"))
+           )
+   );
 	}
 	
 	public int getWorkload(String date) {

@@ -9,27 +9,36 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class MemberDetails implements UserDetails {
 
-    private final Member member;
+	private Long id;
+	private String username;
+	private String password;
+	private String email;
     private final Collection<? extends GrantedAuthority> authorities;
     
-    public MemberDetails(Member member, Collection<? extends GrantedAuthority> authorities) {
-        this.member = member;
-        this.authorities = authorities;
-    }
+    
+    public MemberDetails(Long id,  String password, String email,
+			Collection<? extends GrantedAuthority> authorities) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.authorities = authorities;
+	}
 
-    @Override
+	@Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
     @Override
     public String getPassword() {
-        return member.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return member.getEmail();
+        return email;
     }
 
     @Override
