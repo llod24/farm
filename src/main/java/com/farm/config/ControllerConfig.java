@@ -9,7 +9,6 @@ import com.farm.controller.LoginController;
 import com.farm.controller.MemberController;
 import com.farm.repository.FarmRepository;
 import com.farm.repository.MemberRepository;
-import com.farm.service.CustomAuthenticationProvider;
 import com.farm.service.FarmService;
 import com.farm.service.MemberService;
 import com.farm.service.MyUserDetailsService;
@@ -54,10 +53,6 @@ public class ControllerConfig {
 		return new MyUserDetailsService();
 	}
 	
-	@Bean
-    public CustomAuthenticationProvider customAuthenticationProvider() {
-        return new CustomAuthenticationProvider();
-    }
 	
 	
 	

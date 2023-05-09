@@ -14,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.farm.service.CustomAuthenticationProvider;
 import com.farm.service.MyUserDetailsService;
 
 @Configuration
@@ -51,14 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService);
-        auth.authenticationProvider(customAuthenticationProvider);
-    }
-    @Autowired
-    private CustomAuthenticationProvider customAuthenticationProvider;
-    
-    @Bean
-    public AuthenticationManager authenticationManager() throws Exception {
-        return new ProviderManager(Arrays.asList(customAuthenticationProvider));
     }
     
     @Bean

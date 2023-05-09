@@ -2,10 +2,12 @@ package com.farm.repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
 import com.farm.domain.Member;
@@ -33,19 +35,24 @@ public class MemberRepository {
 	}
 	
 	public MemberDetails findByEmail(String email) {
-		String sql = "SELECT u.id, u.password, u.email, r.name as role " +
-                "FROM users u " +
-                "JOIN user_roles ur ON u.id = ur.user_id " +
+		String sql = "SELECT m.id, m.password, m.email, r.role as role " +
+                "FROM member m " +
+                "JOIN user_roles ur ON m.id = ur.user_id " +
                 "JOIN roles r ON ur.role_id = r.id " +
-                "WHERE u.email = ?";
-		List<MemberDetails> users = template.query(sql, new Object[]{email}, (rs, rowNum) ->
-           new MemberDetails(
-               rs.getLong("id"),
-               rs.getString("password"),
-               rs.getString("email"),
-               Collection<? extends GrantedAuthority> authorities(rs.getString("role"))
-           )
-   );
+                "WHERE m.email = ?";
+		List<MemberDetails> memberDetails = template.query(sql, new Object[]{email}, (rs, rowNum) ->
+	       new MemberDetails(
+	           rs.getLong("id"),
+	           rs.getString("password"),
+	           rs.getString("email"),
+	           Collections.singletonList(new SimpleGrantedAuthority(rs.getString("role")))
+	       )
+	   );
+	    if (memberDetails.isEmpty()) {
+	        return null;
+	    } else {
+	        return memberDetails.get(0);
+	    }
 	}
 	
 	public int getWorkload(String date) {

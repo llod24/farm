@@ -20,7 +20,6 @@ public class MemberDetails implements UserDetails {
 			Collection<? extends GrantedAuthority> authorities) {
 		super();
 		this.id = id;
-		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.authorities = authorities;
