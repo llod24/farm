@@ -1,16 +1,13 @@
 package com.farm.domain;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class MemberDetails implements UserDetails {
 
 	private Long id;
-	private String username;
 	private String password;
 	private String email;
     private final Collection<? extends GrantedAuthority> authorities;
@@ -23,6 +20,10 @@ public class MemberDetails implements UserDetails {
 		this.password = password;
 		this.email = email;
 		this.authorities = authorities;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	@Override
