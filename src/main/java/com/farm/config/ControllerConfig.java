@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import com.farm.controller.FarmController;
-import com.farm.controller.LoginController;
 import com.farm.controller.MemberController;
 import com.farm.repository.FarmRepository;
 import com.farm.repository.MemberRepository;
@@ -43,10 +42,6 @@ public class ControllerConfig {
 		return new MemberController();
 	}
 	
-	@Bean
-	public LoginController loginController() {
-		return new LoginController();
-	}
 	
 	@Bean
 	public MyUserDetailsService myUserDetailsService() {

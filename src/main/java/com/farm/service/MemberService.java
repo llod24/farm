@@ -1,5 +1,7 @@
 package com.farm.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -19,5 +21,11 @@ public class MemberService{
 		memberRepository.addMember(member);
 	}
 	
+	public List<Member> getAllMembers(){
+		return memberRepository.getAllMembers(); 
+	}
 	
+	public Member getMemberById(Long memberId) {
+		return memberRepository.getMemberById(memberId);
+	}
 }

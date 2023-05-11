@@ -64,4 +64,40 @@ public class MemberRepository {
 	        return 0;
 	    }
 	}
+	
+	public List <Member> getAllMembers(){
+		String sql = "SELECT m.id, m.username, m.email, r.role as role " + 
+				"FROM member m " + 
+				"LEFT JOIN user_roles ur ON m.id = ur.user_id " + 
+				"LEFT JOIN roles r ON ur.role_id = r.id;";
+		List<Member> member = template.query(sql, (rs, rowNum) ->
+	       new Member(
+	           rs.getLong("id"),
+	           rs.getString("username"),
+	           rs.getString("email"),
+	           rs.getString("role")
+	       ));
+		return member;		
+	}
+	
+	public Member getMemberById(Long memberId) {
+		String sql = "SELECT m.id, m.username, m.email, r.role as role " + 
+				"FROM member m " + 
+				"LEFT JOIN user_roles ur ON m.id = ur.user_id " + 
+				"LEFT JOIN roles r ON ur.role_id = r.id " +
+				"WHERE m.id = ?";
+		List<Member> member = 
+				template.query(sql, new Object[]{memberId},(rs, rowNum) ->
+	       new Member(
+	           rs.getLong("id"),
+	           rs.getString("username"),
+	           rs.getString("email"),
+	           rs.getString("role")
+	       ));
+	    if (member.isEmpty()) {
+	        return null;
+	    } else {
+	        return member.get(0);
+	    }
+	}
 }

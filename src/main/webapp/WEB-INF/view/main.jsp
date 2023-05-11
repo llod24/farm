@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<a href="/farm/manage">manage</a>
 	<c:if test="${empty sessionScope.user}">
 	  <!-- 로그인 되어 있지 않은 경우 -->
 	  <a href="/farm/register"> register </a>

@@ -13,9 +13,9 @@
         <form method="get" action="/farm/work">
             <div class="form-group">
                 <label for="queryDate">Query Date:</label>
-                <input type="date"  id="queryDate" name="queryDate">
+                <input type="date" id="queryDate" name="queryDate">
             </div>
-            <button type="submit" >Query</button>
+            <button type="submit">Query</button>
         </form>
         <div>
             <% if (request.getAttribute("workload") != null) { %>

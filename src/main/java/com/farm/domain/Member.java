@@ -13,16 +13,22 @@ public class Member {
 	public void setRole(String role) {
 		this.role = role;
 	}
-	public Member(String username, String password, String email) {
+	
+	public Member(Long id, String username, String email, String role) {
+		this.id = id;
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.role = role;
     }
     public Member(String password, String email) {
         this.password = password;
         this.email = email;
     }
-    
+    public Member(String username, String email, String password) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
