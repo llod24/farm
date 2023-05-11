@@ -5,6 +5,8 @@
 <head>
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<table class="table" border="1">
@@ -74,28 +76,28 @@ function createEditForm(member) {
 	  form.action = "/members/" + member.id;
 
 	  var usernameLabel = document.createElement("label");
-	  usernameLabel.innerHTML = "Username: ";
-	  var usernameInput = document.createElement("input");
-	  usernameInput.type = "text";
-	  usernameInput.name = "username";
-	  usernameInput.value = member.username;
+	  usernameLabel.innerHTML = "Username: " + member.username;
+	  //var usernameInput = document.createElement("input");
+	  //usernameInput.type = "text";
+	  //usernameInput.name = "username";
+	  //usernameInput.value = member.username;
 	  form.appendChild(usernameLabel);
-	  form.appendChild(usernameInput);
+	  //form.appendChild(usernameInput);
 
 	  var emailLabel = document.createElement("label");
-	  emailLabel.innerHTML = "Email: ";
-	  var emailInput = document.createElement("input");
-	  emailInput.type = "text";
-	  emailInput.name = "email";
-	  emailInput.value = member.email;
+	  emailLabel.innerHTML = "Email: " + member.email;
+	  //var emailInput = document.createElement("input");
+	  //emailInput.type = "text";
+	  //emailInput.name = "email";
+	  //emailInput.value = member.email;
 	  form.appendChild(emailLabel);
-	  form.appendChild(emailInput);
+	  //form.appendChild(emailInput);
 
 	  var roleLabel = document.createElement("label");
 	  roleLabel.innerHTML = "Role: ";
 	  var roleSelect = document.createElement("select");
 	  roleSelect.name = "role";
-	  var roles = ["Admin", "User", "Guest"];
+	  var roles = ["Admin", "Worker"];
 	  for (var i = 0; i < roles.length; i++) {
 	    var roleOption = document.createElement("option");
 	    roleOption.value = roles[i];
