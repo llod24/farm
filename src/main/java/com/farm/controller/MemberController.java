@@ -98,4 +98,27 @@ public class MemberController {
 	    return member;
 	}
 	
+	@PostMapping("/manage")
+	public String editRole(HttpServletRequest request) {
+		String role = request.getParameter("role");
+		String originalRole = request.getParameter("originalRole");
+		String stringId = request.getParameter("memberId");
+		Long memberId = Long.parseLong(stringId);
+		if (originalRole.equals("권한없음")) {
+			//권한 추가
+			memberService.addRole(memberId, role);
+		}
+		else {
+			if (role.equals("권한없음")) {
+				memberService.deleteRole(memberId, role);
+			}
+			else {
+				memberService.updateRole(memberId, role);
+			}
+		}
+        return "redirect:/manage";
+    }
+	
+	
+	
 }

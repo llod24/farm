@@ -28,4 +28,16 @@ public class MemberService{
 	public Member getMemberById(Long memberId) {
 		return memberRepository.getMemberById(memberId);
 	}
+	
+	public void addRole(Long memberId, String role) {
+		memberRepository.addRole(memberId, role);
+	}
+	
+	public void updateRole(Long memberId, String role) {
+		memberRepository.updateRole(memberId, role);
+	}
+	
+	public void deleteRole(Long memberId, String role) {
+		memberRepository.deleteRole(memberId, role);
+	}
 }

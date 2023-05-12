@@ -44,10 +44,6 @@
       <div class="modal-body">
         <!-- 수정 폼 -->
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary">저장</button>
-      </div>
     </div>
   </div>
 </div>
@@ -73,31 +69,21 @@ function createEditForm(member) {
 	  var form = document.createElement("form");
 	  form.id = "edit-form-" + member.id;
 	  form.method = "post";
-	  form.action = "/members/" + member.id;
+	  form.action = "/farm/manage";
 
 	  var usernameLabel = document.createElement("label");
 	  usernameLabel.innerHTML = "Username: " + member.username;
-	  //var usernameInput = document.createElement("input");
-	  //usernameInput.type = "text";
-	  //usernameInput.name = "username";
-	  //usernameInput.value = member.username;
 	  form.appendChild(usernameLabel);
-	  //form.appendChild(usernameInput);
 
 	  var emailLabel = document.createElement("label");
 	  emailLabel.innerHTML = "Email: " + member.email;
-	  //var emailInput = document.createElement("input");
-	  //emailInput.type = "text";
-	  //emailInput.name = "email";
-	  //emailInput.value = member.email;
 	  form.appendChild(emailLabel);
-	  //form.appendChild(emailInput);
 
 	  var roleLabel = document.createElement("label");
 	  roleLabel.innerHTML = "Role: ";
 	  var roleSelect = document.createElement("select");
 	  roleSelect.name = "role";
-	  var roles = ["Admin", "Worker"];
+	  var roles = ["admin", "worker", "권한없음"];
 	  for (var i = 0; i < roles.length; i++) {
 	    var roleOption = document.createElement("option");
 	    roleOption.value = roles[i];
@@ -109,10 +95,23 @@ function createEditForm(member) {
 	  }
 	  form.appendChild(roleLabel);
 	  form.appendChild(roleSelect);
-
+	  
+	  var originalRole = document.createElement("input");
+	  originalRole.type = "hidden";
+	  originalRole.name = "originalRole";
+	  originalRole.value = member.role;
+	  form.appendChild(originalRole);
+	  
+	  var memberId = document.createElement("input");
+	  memberId.type = "hidden";
+	  memberId.name = "memberId";
+	  memberId.value = member.id;
+	  form.appendChild(memberId);
+	  
 	  var submitButton = document.createElement("input");
 	  submitButton.type = "submit";
 	  submitButton.value = "Save";
+	  submitButton.disabled = true;
 	  form.appendChild(submitButton);
 
 	  var cancelButton = document.createElement("button");
@@ -122,7 +121,15 @@ function createEditForm(member) {
 	    closeModal();
 	  };
 	  form.appendChild(cancelButton);
-
+	
+	  roleSelect.addEventListener("change", function() {
+		  if (roleSelect.value == member.role) {
+		    submitButton.disabled = true;
+		  } else {
+		    submitButton.disabled = false;
+		  }
+	  });
+	  
 	  return form;
 	}
 </script>

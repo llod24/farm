@@ -66,7 +66,7 @@ public class MemberRepository {
 	}
 	
 	public List <Member> getAllMembers(){
-		String sql = "SELECT m.id, m.username, m.email, r.role as role " + 
+		String sql = "SELECT m.id, m.username, m.email, COALESCE(r.role, '권한없음') as role " + 
 				"FROM member m " + 
 				"LEFT JOIN user_roles ur ON m.id = ur.user_id " + 
 				"LEFT JOIN roles r ON ur.role_id = r.id;";
@@ -81,7 +81,7 @@ public class MemberRepository {
 	}
 	
 	public Member getMemberById(Long memberId) {
-		String sql = "SELECT m.id, m.username, m.email, r.role as role " + 
+		String sql = "SELECT m.id, m.username, m.email, COALESCE(r.role, '권한없음') as role " + 
 				"FROM member m " + 
 				"LEFT JOIN user_roles ur ON m.id = ur.user_id " + 
 				"LEFT JOIN roles r ON ur.role_id = r.id " +
@@ -99,5 +99,30 @@ public class MemberRepository {
 	    } else {
 	        return member.get(0);
 	    }
+	}
+	
+	public void addRole(Long memberId, String role) {
+		String getRoleId = "select id from roles where role = ? "; 
+		Long roleId =  template.queryForObject(getRoleId, Long.class, role);
+		template.update((Connection con) -> {
+			PreparedStatement pstmt = con.prepareStatement(
+					"INSERT INTO user_roles VALUES (?, ?)");
+			pstmt.setLong(1, memberId);
+            pstmt.setLong(2, roleId);
+			return pstmt;
+		});
+		
+	}
+	
+	public void updateRole(Long memberId, String role) {
+		String getRoleId = "select id from roles where role = ? "; 
+		Long roleId =  template.queryForObject(getRoleId, Long.class, role);
+		String sql = "UPDATE user_roles SET role_id = ? WHERE user_id = ?";
+		template.update(sql, roleId, memberId);
+	}
+	
+	public void deleteRole(Long memberId, String role) {
+		String sql = "delete from user_roles where user_id = ?";
+		template.update(sql, memberId);	
 	}
 }
