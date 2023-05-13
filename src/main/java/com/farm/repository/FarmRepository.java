@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.farm.domain.ConvertedFarmWork;
+import com.farm.domain.FarmWork;
+import com.farm.domain.Member;
 
 @Repository
 public class FarmRepository {
@@ -42,6 +44,17 @@ public class FarmRepository {
 			});
 		}
 		
+	}
+
+	public List<FarmWork> getDailyFarmWork(String date) {
+		String sql = "select workDate, cropName, workload from work where workDate = ?";
+		List<FarmWork> dailyFarmWork = template.query(sql, new Object[]{date}, (rs, rowNum) ->
+	       new FarmWork(
+		           rs.getString("cropName"),
+		           rs.getString("workload"),
+	           rs.getString("workDate")
+	       ));
+		return dailyFarmWork;	
 	}
 	
 }

@@ -8,6 +8,8 @@
 </head>
 <body>
 	<a href="/farm/manage">manage</a>
+	  <a href="/farm/add"> add </a>
+	  <a href="/farm/work"> load </a>
 	<c:if test="${empty sessionScope.user}">
 	  <!-- 로그인 되어 있지 않은 경우 -->
 	  <a href="/farm/register"> register </a>
@@ -15,8 +17,6 @@
 	</c:if>
 	<c:if test="${not empty sessionScope.user}">
 	  <!-- 로그인 되어 있는 경우 -->
-	  <a href="/farm/add"> add </a>
-	  <a href="/farm/work"> load </a>
 	  <br>
 	  <form action="/farm/logout" method="post">
 	    <button type="submit">로그아웃</button>

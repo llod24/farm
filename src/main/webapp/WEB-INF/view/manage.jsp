@@ -9,7 +9,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<table class="table" border="1">
+<table class="table" border="1">
   <thead>
     <tr>
       <th>ID</th>
@@ -20,7 +20,7 @@
     </tr>
   </thead>
   <tbody>
-    <c:forEach var="member" items="${members}">
+    <c:forEach var="member" items="${dailyFarmWorks}">
       <tr>
         <td>${member.id}</td>
         <td>${member.username}</td>

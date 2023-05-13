@@ -28,9 +28,13 @@ public class FarmController {
 	@GetMapping(value="/work")
 	public String showFarmWorkloadByDate(HttpServletRequest request, Model model) {
 		if(request.getParameter("queryDate") != null) {
-			String workload = request.getParameter("queryDate");
-			int work = farmService.getWorkload(workload);
-			model.addAttribute("workload", work);
+			String date = request.getParameter("queryDate");
+			int work = farmService.getWorkload(date);
+			List<FarmWork> dailyFarmWork = farmService.getDailyFarmWork(date);
+			if (!dailyFarmWork.isEmpty()) {
+	            model.addAttribute("totalFarmWork", work);
+	            model.addAttribute("dailyFarmWorks", dailyFarmWork);
+	        }
 		}
 		return "farmWorkload";
 	}
@@ -59,7 +63,5 @@ public class FarmController {
 	    
 	    farmService.addWorks(works);
 	    return "main";
-	}
-	
-	
+	}	
 }

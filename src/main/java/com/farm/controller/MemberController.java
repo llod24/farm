@@ -70,10 +70,9 @@ public class MemberController {
             session.setAttribute("user", result.getName());         
             session.setAttribute("authorities", memberDetails.getAuthorities());
             model.addAttribute("success", "login success");
-            
             return "main";
         } catch (AuthenticationException e) {
-            model.addAttribute("error", "Invalid username or password");
+            model.addAttribute("error", e.toString());
             return "login";
         }
 	}

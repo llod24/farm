@@ -33,5 +33,10 @@ public class FarmService {
 		farmRepository.addWorks(cWorks);
 		
 	}
+
+
+	public List<FarmWork> getDailyFarmWork(String date) {
+		return farmRepository.getDailyFarmWork(date);
+	}
 	
 }
