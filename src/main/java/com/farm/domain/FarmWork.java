@@ -5,6 +5,7 @@ public class FarmWork {
 	String cropName; 
 	String workload; 
 	String date;
+	String username;
 	
 	public String getCropName() {
 		return cropName;
@@ -18,10 +19,18 @@ public class FarmWork {
 		return date;
 	}
 	
-	public FarmWork(String cropName, String workload, String date) {
+	public String getUsername() {
+		return username;
+	}
+
+	public FarmWork(String cropName, String workload, String date, String username) {
 		super();
 		this.cropName = cropName;
 		this.workload = workload;
 		this.date = date;
-	}    
+		this.username = username;
+	}
+	
+	
+	
 }

@@ -20,7 +20,7 @@
     </tr>
   </thead>
   <tbody>
-    <c:forEach var="member" items="${dailyFarmWorks}">
+    <c:forEach var="member" items="${members}">
       <tr>
         <td>${member.id}</td>
         <td>${member.username}</td>
@@ -83,7 +83,7 @@ function createEditForm(member) {
 	  roleLabel.innerHTML = "Role: ";
 	  var roleSelect = document.createElement("select");
 	  roleSelect.name = "role";
-	  var roles = ["admin", "worker", "권한없음"];
+	  var roles = ["admin", "worker", "temp"];
 	  for (var i = 0; i < roles.length; i++) {
 	    var roleOption = document.createElement("option");
 	    roleOption.value = roles[i];

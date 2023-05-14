@@ -18,7 +18,9 @@ public class MemberService{
 	
 	public void addMember(Member member) {
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
-		memberRepository.addMember(member);
+		Long id = memberRepository.addMember(member);
+		//임시권한 부여
+		memberRepository.addRole(id, "temp");
 	}
 	
 	public List<Member> getAllMembers(){

@@ -50,9 +50,10 @@ public class FarmRepository {
 		String sql = "select workDate, cropName, workload from work where workDate = ?";
 		List<FarmWork> dailyFarmWork = template.query(sql, new Object[]{date}, (rs, rowNum) ->
 	       new FarmWork(
-		           rs.getString("cropName"),
-		           rs.getString("workload"),
-	           rs.getString("workDate")
+		       rs.getString("cropName"),
+		       rs.getString("workload"),
+	           rs.getString("workDate"),
+	           rs.getString("username")
 	       ));
 		return dailyFarmWork;	
 	}

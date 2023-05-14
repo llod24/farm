@@ -43,13 +43,12 @@ public class MemberController {
         String email = request.getParameter("email");
         
         Member member = new Member(username, password, email);
-        
 	    memberService.addMember(member);
 	    return "main";
 	}
 	
-	 @Autowired
-	 private AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 		
 	    
 	@GetMapping(value="/login")
@@ -100,21 +99,10 @@ public class MemberController {
 	@PostMapping("/manage")
 	public String editRole(HttpServletRequest request) {
 		String role = request.getParameter("role");
-		String originalRole = request.getParameter("originalRole");
+		//String originalRole = request.getParameter("originalRole");
 		String stringId = request.getParameter("memberId");
 		Long memberId = Long.parseLong(stringId);
-		if (originalRole.equals("권한없음")) {
-			//권한 추가
-			memberService.addRole(memberId, role);
-		}
-		else {
-			if (role.equals("권한없음")) {
-				memberService.deleteRole(memberId, role);
-			}
-			else {
-				memberService.updateRole(memberId, role);
-			}
-		}
+		memberService.updateRole(memberId, role);
         return "redirect:/manage";
     }
 	

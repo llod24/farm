@@ -22,7 +22,7 @@ public class MemberRepository {
 		this.template = new JdbcTemplate(dataSource);
 	}
 	
-	public void addMember(Member member) {
+	public Long addMember(Member member) {
 		template.update((Connection con) -> {
 			PreparedStatement pstmt = con.prepareStatement(
 					"INSERT INTO member (username, password, email) VALUES (?,?,?)");
@@ -31,7 +31,9 @@ public class MemberRepository {
             pstmt.setString(3, member.getEmail());
 			return pstmt;
 		});
-		
+		String sql = "SELECT id from member WHERE email = ?";
+		Long id =  template.queryForObject(sql, Long.class, member.getEmail());
+		return id;
 	}
 	
 	public MemberDetails findByEmail(String email) {
@@ -66,10 +68,10 @@ public class MemberRepository {
 	}
 	
 	public List <Member> getAllMembers(){
-		String sql = "SELECT m.id, m.username, m.email, COALESCE(r.role, '권한없음') as role " + 
-				"FROM member m " + 
-				"LEFT JOIN user_roles ur ON m.id = ur.user_id " + 
-				"LEFT JOIN roles r ON ur.role_id = r.id;";
+		String sql = "SELECT m.id, m.username, m.email, r.role as role FROM member m " + 
+				"JOIN user_roles ur ON m.id = ur.user_id " + 
+				"JOIN roles r ON ur.role_id = r.id " + 
+				"ORDER BY m.id ASC;";
 		List<Member> member = template.query(sql, (rs, rowNum) ->
 	       new Member(
 	           rs.getLong("id"),
