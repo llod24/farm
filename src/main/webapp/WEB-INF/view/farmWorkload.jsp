@@ -33,6 +33,7 @@
 		      <th>작업량</th>
 		      <th>작업날짜</th>
 		      <th>등록한 사람</th>
+		      <th>등록 날짜 & 시간</th>
 		    </tr>
 		  </thead>
 		  <tbody>
@@ -41,6 +42,9 @@
 		        <td>${dailyFarmWork.cropName}</td>
 		        <td>${dailyFarmWork.workload}</td>
 		        <td>${dailyFarmWork.date}</td>
+		        <td>${dailyFarmWork.username}</td>
+		        <td>${dailyFarmWork.updated_at}</td>
+		        
 		      </tr>
 		    </c:forEach>
 		  </tbody>

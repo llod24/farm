@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,8 +32,9 @@ public class FarmController {
 			String date = request.getParameter("queryDate");
 			int work = farmService.getWorkload(date);
 			List<FarmWork> dailyFarmWork = farmService.getDailyFarmWork(date);
+			
 			if (!dailyFarmWork.isEmpty()) {
-	            model.addAttribute("totalFarmWork", work);
+				model.addAttribute("totalFarmWork", work);
 	            model.addAttribute("dailyFarmWorks", dailyFarmWork);
 	        }
 		}
@@ -46,6 +48,8 @@ public class FarmController {
 	
 	@PostMapping("/add")
 	public String handleAddWork(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		
 	    List<FarmWork> works = new ArrayList<>();
 	    // 입력 개수 받아오기
 	    int inputCount = Integer.parseInt(request.getParameter("inputCount"));
@@ -57,7 +61,7 @@ public class FarmController {
 	        String date = request.getParameter("date-" + i);
 	        
 	        // 생성자 사용, 객체 생성
-	        FarmWork work = new FarmWork(crop, amount, date);
+	        FarmWork work = new FarmWork(crop, amount, date, (Long) session.getAttribute("id"));
 	        works.add(work);
 	    }
 	    

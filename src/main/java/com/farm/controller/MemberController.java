@@ -60,6 +60,7 @@ public class MemberController {
 	public String processLogin(HttpServletRequest request, Model model) {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		Long id = memberService.getIdByEmail(email);
 		Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
         try {
             Authentication result = authenticationManager.authenticate(authentication);
@@ -68,6 +69,7 @@ public class MemberController {
             MemberDetails memberDetails = (MemberDetails) result.getPrincipal();
             session.setAttribute("user", result.getName());         
             session.setAttribute("authorities", memberDetails.getAuthorities());
+            session.setAttribute("id", id);       
             model.addAttribute("success", "login success");
             return "main";
         } catch (AuthenticationException e) {

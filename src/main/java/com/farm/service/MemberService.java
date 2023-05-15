@@ -42,4 +42,8 @@ public class MemberService{
 	public void deleteRole(Long memberId, String role) {
 		memberRepository.deleteRole(memberId, role);
 	}
+
+	public Long getIdByEmail(String email) {
+		return memberRepository.getIdByEmail(email);
+	}
 }

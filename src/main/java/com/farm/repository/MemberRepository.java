@@ -36,6 +36,11 @@ public class MemberRepository {
 		return id;
 	}
 	
+	public Long getIdByEmail(String email) {
+		String sql = "SELECT id from member WHERE email = ?";
+		Long id =  template.queryForObject(sql, Long.class, email);
+		return id;
+	}
 	public MemberDetails findByEmail(String email) {
 		String sql = "SELECT m.id, m.password, m.email, r.role as role " +
                 "FROM member m " +

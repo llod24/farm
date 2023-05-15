@@ -27,7 +27,8 @@ public class FarmService {
 		for (FarmWork work : works) {
 			ConvertedFarmWork cfw = new ConvertedFarmWork(work.getCropName(), 
 							Integer.parseInt(work.getWorkload()),
-							Date.valueOf(work.getDate()));
+							Date.valueOf(work.getDate()),
+							work.getId());
 			cWorks.add(cfw);
 		}
 		farmRepository.addWorks(cWorks);
@@ -39,4 +40,9 @@ public class FarmService {
 		return farmRepository.getDailyFarmWork(date);
 	}
 	
+	public String getNameById(Long id) {
+	    // id 값을 이용하여 name 값을 조회하는 로직
+	    String name = farmRepository.getNameById(id);
+	    return name;
+	}
 }
