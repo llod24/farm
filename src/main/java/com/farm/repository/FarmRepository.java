@@ -39,7 +39,7 @@ public class FarmRepository {
 				pstmt.setDate(1, work.getDate());
 	            pstmt.setString(2, work.getCropName());
 	            pstmt.setInt(3, work.getWorkload());
-	            pstmt.setLong(4, work.getId());
+	            pstmt.setLong(4, work.getMemberId());
 				return pstmt;
 			});
 		}
@@ -47,11 +47,13 @@ public class FarmRepository {
 	}
 
 	public List<FarmWork> getDailyFarmWork(String date) {
-		String sql = "SELECT work.workDate, work.cropName, work.workload, member.username, work.updated_at " + 
+		//사용자 이름을 조회하기 위해 조인
+		String sql = "SELECT work.workID, work.workDate, work.cropName, work.workload, member.username, work.updated_at " + 
 				"FROM work " + 
 				"JOIN member ON work.id = member.id where workDate = ?";
 		List<FarmWork> dailyFarmWork = template.query(sql, new Object[]{date}, (rs, rowNum) ->
 	       new FarmWork(
+	    	   rs.getLong("workID"),
 		       rs.getString("cropName"),
 		       rs.getString("workload"),
 	           rs.getString("workDate"),
@@ -65,6 +67,30 @@ public class FarmRepository {
 		String sql = "SELECT username from member WHERE id = ?";
 		String username =  template.queryForObject(sql, String.class, id);
 		return username;
+	}
+
+	public FarmWork getFarmWorkByWorkId(Long workId) {
+		String sql = "SELECT work.workID, work.workDate, work.cropName, work.workload, member.username, work.updated_at " + 
+				"FROM work " + 
+				"JOIN member ON work.id = member.id where workId = ?";
+		FarmWork farmWork = template.queryForObject(sql, new Object[]{workId}, (rs, rowNum) ->
+	       new FarmWork(
+	    	   rs.getLong("workID"),
+		       rs.getString("cropName"),
+		       rs.getString("workload"),
+	           rs.getString("workDate"),
+	           rs.getString("username"),
+	           rs.getTimestamp("updated_at")
+	       ));
+		return farmWork;
+	}
+
+	
+	public void updateFarmWork(ConvertedFarmWork cfw) {
+		String sql = "UPDATE work SET workDate = ?, cropName = ?, workload = ? WHERE workID = ?";
+		template.update(sql, cfw.getDate(), cfw.getCropName(), 
+				cfw.getWorkload(), cfw.getWorkId());
+		
 	}
 	
 }

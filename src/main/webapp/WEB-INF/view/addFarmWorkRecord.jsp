@@ -40,13 +40,13 @@
         var newInput = document.createElement("div");
         newInput.id = "input-" + inputCount;
         newInput.innerHTML = '<label>작물 이름:</label>' +
-        '<select name="crop-' + inputCount + '">' +
+        '<select name="cropName-' + inputCount + '">' +
         '<option value="적겨자">적겨자</option>' +
         '<option value="로메인">로메인</option>' +
         '<option value="치콘">치콘</option>' +
         '</select><br>' +
         '<label>작업량:</label>' +
-        '<input type="text" name="amount-' + inputCount + '"><br>' +
+        '<input type="text" name="workload-' + inputCount + '"><br>' +
         '<label>작업날짜:</label>' +
         '<input type="date" name="date-' + inputCount + '"><br>' +
         '<button type="button" onclick="removeInput(' + inputCount + ')">-</button>'; 

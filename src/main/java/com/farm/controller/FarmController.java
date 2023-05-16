@@ -10,7 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.farm.domain.FarmWork;
 import com.farm.service.FarmService;
@@ -27,9 +31,12 @@ public class FarmController {
 	}
 	
 	@GetMapping(value="/work")
-	public String showFarmWorkloadByDate(HttpServletRequest request, Model model) {
-		if(request.getParameter("queryDate") != null) {
-			String date = request.getParameter("queryDate");
+	public String showFarmWorkloadByDate(@RequestParam(value = "queryDate", required = false) String date,
+            @RequestParam(value = "successMessage", required = false) String successMessage, Model model) {
+		if (successMessage != null) {
+			model.addAttribute("successMessage", successMessage);
+		}
+		if(date != null) {
 			int work = farmService.getWorkload(date);
 			List<FarmWork> dailyFarmWork = farmService.getDailyFarmWork(date);
 			
@@ -40,6 +47,29 @@ public class FarmController {
 		}
 		return "farmWorkload";
 	}
+	
+	@GetMapping("/work/{workId}")
+	@ResponseBody
+	public FarmWork getFarmWorkById(@PathVariable Long workId) {
+	    FarmWork farmWork = farmService.getFarmWorkByWorkId(workId);
+	    return farmWork;
+	}
+	
+	@PostMapping("/work")
+	public String updateFarmWork(
+			@RequestParam("workId") String workId,
+            @RequestParam("cropName") String cropName,
+            @RequestParam("workload") String workload,
+            @RequestParam("date") String date,
+            RedirectAttributes redirect) {
+        // 생성자 사용, 객체 생성
+        FarmWork work = new FarmWork(workId, cropName, workload, date);
+		farmService.updateFarmWork(work);
+		redirect.addFlashAttribute("successMessage", "업데이트 완료");
+	    
+        return "redirect:/work";
+    }
+	
 	
 	@GetMapping(value="/add")
 	public String addFarmWorkRecord() {
@@ -56,16 +86,17 @@ public class FarmController {
 	    
 	    // 데이터 받아오기
 	    for (int i = 1; i <= inputCount; i++) {
-	        String crop = request.getParameter("crop-" + i);
-	        String amount = request.getParameter("amount-" + i);
+	        String cropName = request.getParameter("cropName-" + i);
+	        String workload = request.getParameter("workload-" + i);
 	        String date = request.getParameter("date-" + i);
 	        
 	        // 생성자 사용, 객체 생성
-	        FarmWork work = new FarmWork(crop, amount, date, (Long) session.getAttribute("id"));
+	        FarmWork work = new FarmWork(cropName, workload, date, (Long) session.getAttribute("id"));
 	        works.add(work);
 	    }
 	    
 	    farmService.addWorks(works);
 	    return "main";
 	}	
+	
 }
