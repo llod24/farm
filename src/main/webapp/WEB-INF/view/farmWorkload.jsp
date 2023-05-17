@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,7 +45,7 @@
 	      <th>등록한 사람</th>
 	      <th>등록 날짜, 시간</th>
 	      <th>수정</th>
-	      <th>삭제</th>
+	      <th>삭제 ${sessionScope.authorities}</th>
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -54,7 +57,16 @@
 	        <td>${dailyFarmWork.date}</td>
 	        <td>${dailyFarmWork.username}</td>
 	        <td>${dailyFarmWork.updated_at}</td>
-	        <td> <button class="btn btn-primary edit-btn" data-toggle="modal" data-target="#myModal" data-id="${dailyFarmWork.workId}"> 수정 </button></td>
+	        <td>
+		        <c:choose>
+				    <c:when test="${sessionScope.authorities == '[admin]' || dailyFarmWork.memberId == sessionScope.id}">
+						<button class="btn btn-primary edit-btn" 
+							data-toggle="modal" data-target="#myModal" 
+							data-id="${dailyFarmWork.workId}"> 수정 </button>
+				    </c:when>
+				</c:choose>	        
+	        </td>
+	        <td>삭제버튼예정</td>
 	      </tr>
 	    </c:forEach>
 	  </tbody>

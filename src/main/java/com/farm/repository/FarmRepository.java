@@ -48,11 +48,12 @@ public class FarmRepository {
 
 	public List<FarmWork> getDailyFarmWork(String date) {
 		//사용자 이름을 조회하기 위해 조인
-		String sql = "SELECT work.workID, work.workDate, work.cropName, work.workload, member.username, work.updated_at " + 
+		String sql = "SELECT work.id, work.workID, work.workDate, work.cropName, work.workload, member.username, work.updated_at " + 
 				"FROM work " + 
 				"JOIN member ON work.id = member.id where workDate = ?";
 		List<FarmWork> dailyFarmWork = template.query(sql, new Object[]{date}, (rs, rowNum) ->
 	       new FarmWork(
+	    	   rs.getLong("id"),
 	    	   rs.getLong("workID"),
 		       rs.getString("cropName"),
 		       rs.getString("workload"),
@@ -70,11 +71,12 @@ public class FarmRepository {
 	}
 
 	public FarmWork getFarmWorkByWorkId(Long workId) {
-		String sql = "SELECT work.workID, work.workDate, work.cropName, work.workload, member.username, work.updated_at " + 
+		String sql = "SELECT work.id, work.workID, work.workDate, work.cropName, work.workload, member.username, work.updated_at " + 
 				"FROM work " + 
 				"JOIN member ON work.id = member.id where workId = ?";
 		FarmWork farmWork = template.queryForObject(sql, new Object[]{workId}, (rs, rowNum) ->
 	       new FarmWork(
+		       rs.getLong("id"),
 	    	   rs.getLong("workID"),
 		       rs.getString("cropName"),
 		       rs.getString("workload"),

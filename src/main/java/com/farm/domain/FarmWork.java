@@ -9,8 +9,8 @@ public class FarmWork {
 	String date;
 	String stringWorkId;
 
-	Long workId; // 데이터 삽입시 auto inc 되는 id 저장용
-	Long memberId; // member의 id 저장용
+	Long workId; 
+	Long memberId; 
 	String username;
 	Timestamp updated_at;
 
@@ -56,8 +56,9 @@ public class FarmWork {
 	}
 
 	//데이터 조회시 사용되는 생성자
-	public FarmWork(Long workId, String cropName, String workload, String date, String username, Timestamp updated_at) {
+	public FarmWork(Long memberId, Long workId, String cropName, String workload, String date, String username, Timestamp updated_at) {
 		super();
+		this.memberId = memberId;
 		this.workId = workId;
 		this.cropName = cropName;
 		this.workload = workload;
