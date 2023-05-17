@@ -1,5 +1,6 @@
 package com.farm.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,20 +32,31 @@ public class FarmController {
 	}
 	
 	@GetMapping(value="/work")
-	public String showFarmWorkloadByDate(@RequestParam(value = "queryDate", required = false) String date,
+	public String showFarmWorkloadByDate(
+			@RequestParam(value = "queryDate", required = false, defaultValue = "") String date,
             @RequestParam(value = "successMessage", required = false) String successMessage, Model model) {
 		if (successMessage != null) {
 			model.addAttribute("successMessage", successMessage);
 		}
-		if(date != null) {
-			int work = farmService.getWorkload(date);
-			List<FarmWork> dailyFarmWork = farmService.getDailyFarmWork(date);
-			
-			if (!dailyFarmWork.isEmpty()) {
-				model.addAttribute("totalFarmWork", work);
-	            model.addAttribute("dailyFarmWorks", dailyFarmWork);
-	        }
+		if (date.isEmpty()) {
+			LocalDate today = LocalDate.now();
+			date = today.toString();
 		}
+		int work = farmService.getWorkload(date);
+		List<FarmWork> dailyFarmWork = farmService.getDailyFarmWork(date);
+		
+		if (!dailyFarmWork.isEmpty()) {
+			model.addAttribute("totalFarmWork", work);
+            model.addAttribute("dailyFarmWorks", dailyFarmWork);
+            model.addAttribute("queryDate", date);
+		}
+		
+		// 현재 날짜를 디폴트로 출력하하게끔
+//		if(date != null) {
+//			LocalDate today  = LocalDate.now();
+//			date = today.toString();
+//	        }
+		
 		return "farmWorkload";
 	}
 	
@@ -70,7 +82,15 @@ public class FarmController {
         return "redirect:/work";
     }
 	
-	
+	@PostMapping("/work/delete")
+	public String deleteFarmWork(
+			@RequestParam("workId") String workId,
+            RedirectAttributes redirect) {
+		farmService.deleteFarmWork(workId);
+		redirect.addFlashAttribute("successMessage", "삭제 완료");
+	    
+        return "redirect:/work";
+    }
 	@GetMapping(value="/add")
 	public String addFarmWorkRecord() {
 		return "addFarmWorkRecord";
@@ -96,7 +116,7 @@ public class FarmController {
 	    }
 	    
 	    farmService.addWorks(works);
-	    return "main";
+	    return "main";	
 	}	
 	
 }

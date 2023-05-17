@@ -94,5 +94,10 @@ public class FarmRepository {
 				cfw.getWorkload(), cfw.getWorkId());
 		
 	}
+
+	public void deleteFarmWork(Long id) {
+		String sql = "DELETE from work where workID = ?";
+		template.update(sql, id);
+	}
 	
 }

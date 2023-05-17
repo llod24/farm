@@ -57,4 +57,9 @@ public class FarmService {
 		farmRepository.updateFarmWork(cfw);
 		
 	}
+
+	public void deleteFarmWork(String workId) {
+		Long id = Long.parseLong(workId);
+		farmRepository.deleteFarmWork(id);
+	}
 }

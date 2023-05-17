@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,20 +11,20 @@
 </head>
 <body>
  <div class="container">        
-    <h2>Total Workload</h2>
+    <h2>작업 조회</h2>
     <form method="get" action="/farm/work">
         <div class="form-group">
-            <label for="queryDate">Query Date:</label>
-            <input type="date" id="queryDate" name="queryDate">
+            <label for="queryDate">날짜를 선택하세요:</label>
+            <input type="date" id="queryDate" name="queryDate" value="${queryDate}"/>
+        	<button type="submit">조회</button>
         </div>
-        <button type="submit">Query</button>
     </form>
     <div>
 	    <c:if test="${not empty successMessage}">
 	        <div class="success-message">${successMessage}</div>
 	    </c:if>
         <c:if test="${not empty totalFarmWork}">
-   		 <h3>Total Workload for ${param.queryDate}: ${totalFarmWork}</h3>
+   		 <h3>총 작업량 ${param.queryDate}: ${totalFarmWork}</h3>
 		</c:if>
     </div>
     <c:if test="${empty dailyFarmWorks}">
@@ -45,7 +42,7 @@
 	      <th>등록한 사람</th>
 	      <th>등록 날짜, 시간</th>
 	      <th>수정</th>
-	      <th>삭제 ${sessionScope.authorities}</th>
+	      <th>삭제</th>
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -59,14 +56,25 @@
 	        <td>${dailyFarmWork.updated_at}</td>
 	        <td>
 		        <c:choose>
-				    <c:when test="${sessionScope.authorities == '[admin]' || dailyFarmWork.memberId == sessionScope.id}">
-						<button class="btn btn-primary edit-btn" 
+				    <c:when test="${sessionScope.authorities == '[admin]' || 
+				    (dailyFarmWork.memberId == sessionScope.id && sessionScope.authorities != '[temp]')}">
+     					<button class="btn btn-primary edit-btn" 
 							data-toggle="modal" data-target="#myModal" 
 							data-id="${dailyFarmWork.workId}"> 수정 </button>
 				    </c:when>
 				</c:choose>	        
 	        </td>
-	        <td>삭제버튼예정</td>
+	        <td>	
+				<c:choose>
+				    <c:when test="${sessionScope.authorities == '[admin]' || 
+				    (dailyFarmWork.memberId == sessionScope.id && sessionScope.authorities != '[temp]')}">
+     					<button class="btn btn-primary delete-btn" 
+							onclick="showModal(${dailyFarmWork.workId})" 
+							data-toggle="modal" data-target="#myModal" 
+							data-id="${dailyFarmWork.workId}">삭제 </button>
+				    </c:when>
+				</c:choose>
+	        </td>
 	      </tr>
 	    </c:forEach>
 	  </tbody>
@@ -75,7 +83,7 @@
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title">작업 정보 수정</h5>
+	        <h5 class="modal-title">작업 정보 수정 / 삭제</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -83,9 +91,13 @@
 	      <div class="modal-body">
 	        <!-- 수정 폼 -->
 	      </div>
+	      <div class="modal-footer">
+	        <!-- 수정 폼 -->
+	      </div>
 	    </div>
 	  </div>
 	</div>
+	
 	</c:if>
  </div>
  <script>
@@ -118,7 +130,6 @@ function createEditForm(work) {
 	  + work.workload + " 작업날짜: " + work.date;
 	  form.appendChild(originaldata);
 	  form.appendChild(document.createElement("br"));
-	  
 	  
 	  //수정사항 입력
 	  var changeLabel = document.createElement("label");
@@ -166,8 +177,64 @@ function createEditForm(work) {
 	  
 	  form.appendChild(cancelButton);	  
 	  return form;
-	}
+	  }
+
+$(document).on("click", ".edit-btn", function () {
+	//데이터 id로 설정한 workId를 받아옴
+	  var workId = $(this).data('id');
+	  console.log(workId);
+	  $.ajax({
+	    url: "/farm/work/" + workId,
+	    type: "GET",
+	    dataType: "json",
+	    success: function (data) {
+	      var editForm = createEditForm(data);
+	      $('#myModal .modal-body').html(editForm);
+	    },
+	    error: function (xhr, status, error) {
+	      alert('회원 정보를 가져오는데 실패했습니다.');
+	    }
+	  });
+	});
+
+function showModal(workId) {
+	var form = document.createElement("form");
+	form.id = "delete-form-" + workId;
+	form.method = "post";
+	form.action = "/farm/work/delete";
 	
+	var deleteString = document.createElement("label");
+	deleteString.innerHTML = "삭제하시겠습니까?<br><br><br>";
+	form.appendChild(deleteString);
+	
+	var workIdInput = document.createElement("input");
+	workIdInput.type = "hidden";
+	workIdInput.name = "workId";
+	workIdInput.value = workId;
+	form.appendChild(workIdInput);
+	
+    var cancelButton = document.createElement("button");
+	cancelButton.type = "button";
+	cancelButton.innerHTML = "취소";
+	cancelButton.onclick = function() {
+	  closeModal();
+	};
+
+	form.appendChild(cancelButton);
+	var submitButton = document.createElement("input");
+	submitButton.type = "submit";
+	submitButton.value = "저장";
+	form.appendChild(submitButton);
+
+    $('#myModal .modal-body').html(form);
+    $('#myModal').modal('show');
+    
+	}
+
+function closeModal() {
+	$('#myModal').modal('hide');
+	}
  </script>   
+ 
 </body>
 </html>

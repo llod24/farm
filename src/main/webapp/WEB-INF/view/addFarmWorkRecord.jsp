@@ -8,14 +8,14 @@
     <form method="post" action="/farm/add">
       <input type="hidden" id="inputCount" name="inputCount" value="1">
       <label>작물 이름:</label>
-      <select name="crop-1">
+      <select name="cropName-1">
         <option value="적겨자">적겨자</option>
         <option value="로메인">로메인</option>
         <option value="치콘">치콘</option>
       </select>
       <br>
       <label>작업량:</label>
-      <input type="text" name="amount-1">
+      <input type="text" name="workload-1">
       <br>
       <label>작업날짜:</label>
       <input type="date" name="date-1">

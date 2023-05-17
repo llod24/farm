@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.farm.domain.Member;
 import com.farm.domain.MemberDetails;
@@ -79,8 +80,10 @@ public class MemberController {
 	}
 	
 	@PostMapping("/logout")
-	public String logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+	public String logout(HttpServletRequest request, HttpServletResponse response, 
+			Authentication authentication, SessionStatus sessionStatus) {
         new SecurityContextLogoutHandler().logout(request, response, authentication);
+        sessionStatus.setComplete();
         return "main";
     }
 	
