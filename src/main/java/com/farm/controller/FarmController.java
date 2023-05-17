@@ -30,7 +30,33 @@ public class FarmController {
 	public String loadMain() {		
 		return "main";
 	}
+	@GetMapping(value="/add")
+	public String addFarmWorkRecord() {
+		return "addFarmWorkRecord";
+	}
 	
+	@PostMapping("/add")
+	public String handleAddWork(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		
+	    List<FarmWork> works = new ArrayList<>();
+	    // 입력 개수 받아오기
+	    int inputCount = Integer.parseInt(request.getParameter("inputCount"));
+	    
+	    // 데이터 받아오기
+	    for (int i = 1; i <= inputCount; i++) {
+	        String cropName = request.getParameter("cropName-" + i);
+	        String workload = request.getParameter("workload-" + i);
+	        String date = request.getParameter("date-" + i);
+	        
+	        // 생성자 사용, 객체 생성
+	        FarmWork work = new FarmWork(cropName, workload, date, (Long) session.getAttribute("id"));
+	        works.add(work);
+	    }
+	    
+	    farmService.addWorks(works);
+	    return "main";	
+	}	
 	@GetMapping(value="/work")
 	public String showFarmWorkloadByDate(
 			@RequestParam(value = "queryDate", required = false, defaultValue = "") String date,
@@ -50,14 +76,7 @@ public class FarmController {
             model.addAttribute("dailyFarmWorks", dailyFarmWork);
             model.addAttribute("queryDate", date);
 		}
-		
-		// 현재 날짜를 디폴트로 출력하하게끔
-//		if(date != null) {
-//			LocalDate today  = LocalDate.now();
-//			date = today.toString();
-//	        }
-		
-		return "farmWorkload";
+		return "farmWorkByDate";
 	}
 	
 	@GetMapping("/work/{workId}")
@@ -91,32 +110,25 @@ public class FarmController {
 	    
         return "redirect:/work";
     }
-	@GetMapping(value="/add")
-	public String addFarmWorkRecord() {
-		return "addFarmWorkRecord";
-	}
 	
-	@PostMapping("/add")
-	public String handleAddWork(HttpServletRequest request) {
-		HttpSession session = request.getSession();
+	@GetMapping(value="/work/month")
+	public String showFarmWorkloadByMonth(
+			@RequestParam(value = "queryMonth", required = false, defaultValue = "") String month,
+            @RequestParam(value = "successMessage", required = false) String successMessage, Model model) {
+		if (successMessage != null) {
+			model.addAttribute("successMessage", successMessage);
+		}
+//		if (date.isEmpty()) {
+//			LocalDate today = LocalDate.now();
+//			date = today.toString();
+//		}
+		List<FarmWork> monthlyFarmWork = farmService.getMonthlyFarmWork(month);
 		
-	    List<FarmWork> works = new ArrayList<>();
-	    // 입력 개수 받아오기
-	    int inputCount = Integer.parseInt(request.getParameter("inputCount"));
-	    
-	    // 데이터 받아오기
-	    for (int i = 1; i <= inputCount; i++) {
-	        String cropName = request.getParameter("cropName-" + i);
-	        String workload = request.getParameter("workload-" + i);
-	        String date = request.getParameter("date-" + i);
-	        
-	        // 생성자 사용, 객체 생성
-	        FarmWork work = new FarmWork(cropName, workload, date, (Long) session.getAttribute("id"));
-	        works.add(work);
-	    }
-	    
-	    farmService.addWorks(works);
-	    return "main";	
-	}	
-	
+		if (!monthlyFarmWork.isEmpty()) {
+			//model.addAttribute("totalFarmWork", work);
+            model.addAttribute("monthlyFarmWorks", monthlyFarmWork);
+            model.addAttribute("queryMonth", month);
+		}
+		return "farmWorkByMonth";
+	}
 }

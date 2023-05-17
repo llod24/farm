@@ -62,4 +62,8 @@ public class FarmService {
 		Long id = Long.parseLong(workId);
 		farmRepository.deleteFarmWork(id);
 	}
+
+	public List<FarmWork> getMonthlyFarmWork(String month) {
+		return farmRepository.getMonthlyFarmWork(month);
+	}
 }

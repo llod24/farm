@@ -48,8 +48,7 @@ public class FarmRepository {
 
 	public List<FarmWork> getDailyFarmWork(String date) {
 		//사용자 이름을 조회하기 위해 조인
-		String sql = "SELECT work.id, work.workID, work.workDate, work.cropName, work.workload, member.username, work.updated_at " + 
-				"FROM work " + 
+		String sql = "SELECT *, member.username FROM work " + 
 				"JOIN member ON work.id = member.id where workDate = ?";
 		List<FarmWork> dailyFarmWork = template.query(sql, new Object[]{date}, (rs, rowNum) ->
 	       new FarmWork(
@@ -98,6 +97,23 @@ public class FarmRepository {
 	public void deleteFarmWork(Long id) {
 		String sql = "DELETE from work where workID = ?";
 		template.update(sql, id);
+	}
+
+	public List<FarmWork> getMonthlyFarmWork(String month) {
+		
+		String sql = "SELECT *, member.username FROM work JOIN member "
+				+ "ON work.id = member.id WHERE DATE_FORMAT(workDate, '%Y-%m') = ? ORDER BY work.workDate ASC";
+		List<FarmWork> monthlyFarmWork = template.query(sql, new Object[]{month}, (rs, rowNum) ->
+	       new FarmWork(
+	    	   rs.getLong("id"),
+	    	   rs.getLong("workID"),
+		       rs.getString("cropName"),
+		       rs.getString("workload"),
+	           rs.getString("workDate"),
+	           rs.getString("username"),
+	           rs.getTimestamp("updated_at")
+	       ));
+		return monthlyFarmWork;
 	}
 	
 }
