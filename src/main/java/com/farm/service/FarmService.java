@@ -3,6 +3,7 @@ package com.farm.service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -65,5 +66,9 @@ public class FarmService {
 
 	public List<FarmWork> getMonthlyFarmWork(String month) {
 		return farmRepository.getMonthlyFarmWork(month);
+	}
+
+	public List<Map<String, Object>> getWorkloadData(String month, String cropName) {
+		return farmRepository.getWorkloadData(month, cropName);		
 	}
 }

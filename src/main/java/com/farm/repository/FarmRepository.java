@@ -3,6 +3,7 @@ package com.farm.repository;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -114,6 +115,16 @@ public class FarmRepository {
 	           rs.getTimestamp("updated_at")
 	       ));
 		return monthlyFarmWork;
+	}
+
+	public List<Map<String, Object>> getWorkloadData(String month, String cropName) {
+		String sql = "SELECT DATE_FORMAT(workDate, '%Y-%m-%d') AS workDay, SUM(workload) AS totalWorkload " +
+	               "FROM work " +
+	               "WHERE cropName = ? AND DATE_FORMAT(workDate, '%Y-%m') = ? " +
+	               "GROUP BY DATE_FORMAT(workDate, '%Y-%m-%d')" +
+	               " ORDER BY DATE_FORMAT(workDate, '%Y-%m-%d') ASC";
+		List<Map<String, Object>> resultList = template.queryForList(sql, cropName, month);
+		return resultList;
 	}
 	
 }

@@ -11,6 +11,7 @@
 	  <a href="/farm/add"> add </a>
 	  <a href="/farm/work"> load </a>
 	  <a href="/farm/work/month"> month </a>
+	  <a href="/farm/work/chart"> chart </a>
 	<c:if test="${empty sessionScope.user}">
 	  <!-- 로그인 되어 있지 않은 경우 -->
 	  <a href="/farm/register"> register </a>

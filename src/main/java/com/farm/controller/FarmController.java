@@ -1,8 +1,10 @@
 package com.farm.controller;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -131,4 +133,27 @@ public class FarmController {
 		}
 		return "farmWorkByMonth";
 	}
+	
+	@GetMapping(value = "/work/chart")
+	public String showWorkloadChart(
+			@RequestParam(value = "queryMonth", required = false, defaultValue = "") String month,
+			@RequestParam(value = "cropName", required = false) String cropName,
+			Model model)	{
+	    List<Map<String, Object>> result = farmService.getWorkloadData(month, cropName);
+	    List<String> labels =  new ArrayList<>();
+	    List<Integer> workloadData =  new ArrayList<>();
+	    if (result != null) {
+		    for (Map<String, Object> resultMap : result) {
+		    	labels.add(resultMap.get("workDay").toString());
+		    	BigDecimal totalWorkload = (BigDecimal) resultMap.get("totalWorkload");
+		        workloadData.add(totalWorkload.intValue()); // BigDecimal 값을 Integer로 변환하여 추가
+		    
+		    }
+		    model.addAttribute("workloadData", workloadData);
+		    model.addAttribute("labels", labels);
+		    
+	    }
+		return "workloadChart";
+	}
+	
 }
