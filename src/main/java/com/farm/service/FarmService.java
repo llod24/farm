@@ -3,13 +3,15 @@ package com.farm.service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.farm.domain.ChartData;
+import com.farm.domain.ChartDataList;
 import com.farm.domain.ConvertedFarmWork;
 import com.farm.domain.FarmWork;
 import com.farm.repository.FarmRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class FarmService {
 	
@@ -68,7 +70,29 @@ public class FarmService {
 		return farmRepository.getMonthlyFarmWork(month);
 	}
 
-	public List<Map<String, Object>> getWorkloadData(String month, String cropName) {
-		return farmRepository.getWorkloadData(month, cropName);		
+	public List<String> getWorkloadData(String month, String cropName) {
+		List<ChartData> chartData = farmRepository.getWorkloadData(month, cropName);
+		List<String> dates = new ArrayList<>();
+		List<Integer> workloads = new ArrayList<>();
+		for (ChartData data : chartData) {
+		    dates.add(data.getDate());
+		    workloads.add(data.getWorkload());
+		}
+		try {
+			//ChartData 리스트를 JSON으로 변환
+	        ObjectMapper objectMapper = new ObjectMapper();
+	        String date = objectMapper.writeValueAsString(dates);
+	        String workload = objectMapper.writeValueAsString(workloads);
+
+		    List<String> result = new ArrayList<>();
+		    result.add(date);
+		    result.add(workload);
+		    return result;
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+		
 	}
 }
