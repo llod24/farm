@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.farm.domain.ChartData;
-import com.farm.domain.ChartDataList;
 import com.farm.domain.ConvertedFarmWork;
 import com.farm.domain.FarmWork;
 import com.farm.repository.FarmRepository;

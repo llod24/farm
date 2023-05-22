@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.farm.domain.ChartDataList;
 import com.farm.domain.FarmWork;
 import com.farm.service.FarmService;
 
@@ -139,11 +138,9 @@ public class FarmController {
 			@RequestParam(value = "cropName", required = false) String cropName,
 			Model model)	{
 	    List<String> result = farmService.getWorkloadData(month, cropName);
-	    if (result != null) {
-		    
+	    if (result != null) {		    
 		    model.addAttribute("labels", result.get(0));
-		    model.addAttribute("workloadData", result.get(1));
-		    
+		    model.addAttribute("workloadData", result.get(1));		    
 	    }
 		return "workloadChart";
 	}

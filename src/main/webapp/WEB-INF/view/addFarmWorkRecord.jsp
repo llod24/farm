@@ -3,8 +3,12 @@
 <html>
   <head>
     <title>농장 작업 입력</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    
   </head>
   <body>
+  
     <form method="post" action="/farm/add">
       <input type="hidden" id="inputCount" name="inputCount" value="1">
       <label>작물 이름:</label>

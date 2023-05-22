@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.farm.domain.ChartData;
-import com.farm.domain.ChartDataList;
 import com.farm.domain.ConvertedFarmWork;
 import com.farm.domain.FarmWork;
 
