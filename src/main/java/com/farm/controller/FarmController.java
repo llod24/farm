@@ -28,7 +28,7 @@ public class FarmController {
 
 	@GetMapping(value="/")
 	public String loadMain() {		
-		return "main";
+		return "login";
 	}
 	@GetMapping(value="/add")
 	public String addFarmWorkRecord() {
@@ -143,6 +143,11 @@ public class FarmController {
 		    model.addAttribute("workloadData", result.get(1));		    
 	    }
 		return "workloadChart";
+	}
+	
+	@GetMapping(value = "/main")
+	public String showMain() {
+		return "main";
 	}
 	
 }

@@ -19,7 +19,7 @@
       </select>
       <br>
       <label>작업량:</label>
-      <input type="text" name="workload-1">
+      <input type="number" name="workload-1">
       <br>
       <label>작업날짜:</label>
       <input type="date" name="date-1">
@@ -50,7 +50,7 @@
         '<option value="치콘">치콘</option>' +
         '</select><br>' +
         '<label>작업량:</label>' +
-        '<input type="text" name="workload-' + inputCount + '"><br>' +
+        '<input type="number" name="workload-' + inputCount + '"><br>' +
         '<label>작업날짜:</label>' +
         '<input type="date" name="date-' + inputCount + '"><br>' +
         '<button type="button" onclick="removeInput(' + inputCount + ')">-</button>'; 

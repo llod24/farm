@@ -8,23 +8,26 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+	<div class="align-middle"> 
 	<h2>로그인하기</h2>
 	<c:if test="${not empty error}">
-        <p style="color:red">${error}</p>
-    </c:if>
-    <c:if test="${not empty success}">
-        <p style="color:blue">${success}</p>
-    </c:if>
-    <form action="/farm/login" method="post">
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-        </div>        
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">로그인</button>
-    </form>
+	    <p style="color:red">${error}</p>
+	</c:if>
+	<c:if test="${not empty success}">
+	    <p style="color:blue">${success}</p>
+	</c:if>
+	<form action="/farm/login" method="post" class="container">
+	    <div class="form-group">
+	        <label for="email">Email:</label>
+	        <input type="email" id="email" name="email" class="form-control" required>
+	    </div>        
+	    <div class="form-group">
+	        <label for="password">Password:</label>
+	        <input type="password" id="password" name="password" class="form-control" required>
+	    </div>
+	    <button type="submit" class="btn btn-primary">로그인</button>
+	</form>
+	<a href="/farm/register">회원가입</a>
+	</div>
 </body>
 </html>
