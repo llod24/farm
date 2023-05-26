@@ -46,4 +46,8 @@ public class MemberService{
 	public Long getIdByEmail(String email) {
 		return memberRepository.getIdByEmail(email);
 	}
+
+	public String getNameByEmail(String email) {
+		return memberRepository.getNameByEmail(email);
+	}
 }
