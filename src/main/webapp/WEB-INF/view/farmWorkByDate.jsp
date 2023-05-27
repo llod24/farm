@@ -10,6 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+<c:import url="nav.jsp"/>
  <div class="container">        
     <h2>작업 조회</h2>
     <form method="get" action="/farm/work">
@@ -223,7 +224,7 @@ function showModal(workId) {
 	form.appendChild(cancelButton);
 	var submitButton = document.createElement("input");
 	submitButton.type = "submit";
-	submitButton.value = "저장";
+	submitButton.value = "삭제";
 	form.appendChild(submitButton);
 
     $('#myModal .modal-body').html(form);

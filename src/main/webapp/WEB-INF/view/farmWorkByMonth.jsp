@@ -9,6 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>     
+<c:import url="nav.jsp"/>
 <h2>작업 조회</h2>
 <form method="get" action="/farm/work/month">
     <div class="form-group">
