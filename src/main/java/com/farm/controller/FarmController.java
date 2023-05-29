@@ -36,27 +36,30 @@ public class FarmController {
 	}
 	
 	@PostMapping("/add")
-	public String handleAddWork(HttpServletRequest request) {
-		HttpSession session = request.getSession();
-		
+	public String handleAddWork(HttpServletRequest request, Model model) {
+	    HttpSession session = request.getSession();
+	    
 	    List<FarmWork> works = new ArrayList<>();
-	    // 입력 개수 받아오기
 	    int inputCount = Integer.parseInt(request.getParameter("inputCount"));
 	    
-	    // 데이터 받아오기
 	    for (int i = 1; i <= inputCount; i++) {
 	        String cropName = request.getParameter("cropName-" + i);
 	        String workload = request.getParameter("workload-" + i);
 	        String date = request.getParameter("date-" + i);
 	        
-	        // 생성자 사용, 객체 생성
+	        if (cropName.isEmpty() || workload.isEmpty() || date.isEmpty()) {
+	            model.addAttribute("error", "모든 필수 항목을 입력해주세요.");
+	            return "addFarmWorkRecord";
+	        }
+	        
 	        FarmWork work = new FarmWork(cropName, workload, date, (Long) session.getAttribute("id"));
 	        works.add(work);
 	    }
 	    
 	    farmService.addWorks(works);
-	    return "main";	
-	}	
+	    return "farmWorkByDate";
+	}
+
 	@GetMapping(value="/work")
 	public String showFarmWorkloadByDate(
 			@RequestParam(value = "queryDate", required = false, defaultValue = "") String date,

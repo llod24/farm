@@ -36,11 +36,9 @@
 		      </li>
 		    </c:when>
 		    <c:otherwise>
-		      <li class="nav-item">
-		        <span class="navbar-text">
-		          ${sessionScope.name}님 안녕하세요
-		        </span>
-		      </li>
+		        <li class="nav-item">
+			      <span class="nav-link active">${sessionScope.name}님 안녕하세요</span>
+			    </li>
 		      <li class="nav-item">
 		        <form action="/farm/logout" method="post">
 		          <button class="btn btn-outline-success" type="submit">로그아웃</button>
