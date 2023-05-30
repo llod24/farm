@@ -138,4 +138,9 @@ public class MemberRepository {
 		String sql = "delete from user_roles where user_id = ?";
 		template.update(sql, memberId);	
 	}
+	
+	public List<String> getAllRoles(){
+		String query = "SELECT role FROM roles";
+        return template.queryForList(query, String.class);
+	}
 }

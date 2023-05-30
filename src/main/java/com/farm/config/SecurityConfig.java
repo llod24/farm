@@ -15,7 +15,7 @@ import com.farm.service.MyUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter  {
     
     @Autowired
     private MyUserDetailsService userDetailsService;
@@ -30,18 +30,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/farm", "/farm/login").permitAll()
+                .antMatchers("/farm/manage").hasRole("sdfsdfs")
+//                .anyRequest().authenticated()
                 .and()
             .formLogin()
-                .loginPage("/login")
+                .loginPage("/farm/login")
                 .defaultSuccessUrl("/")
-                .permitAll()
                 .and()
             .logout()
-                .logoutUrl("/logout")
+                .logoutUrl("/farm/logout")
                 .logoutSuccessUrl("/")
-                .permitAll();
+        		.and()
+        	.exceptionHandling()
+            	.accessDeniedPage("/login");
     }
     
     @Override

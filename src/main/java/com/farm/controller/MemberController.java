@@ -92,7 +92,9 @@ public class MemberController {
 	@GetMapping(value="/manage")
 	public String getMembers(Model model) {
 	    List<Member> memberList = memberService.getAllMembers();
+	    String optionList = memberService.getAllRoles();
 	    model.addAttribute("members", memberList);
+	    model.addAttribute("options", optionList);
 	    return "manage";
 	}
 	

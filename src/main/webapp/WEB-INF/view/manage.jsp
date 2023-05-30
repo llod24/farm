@@ -106,7 +106,7 @@ function createEditForm(member) {
 	  var roleSelect = document.createElement("select");
 	  roleSelect.name = "role";
 	  roleSelect.classList.add("form-select");
-	  var roles = ["admin", "worker", "temp"];
+	  var roles =  ${options}; 
 	  for (var i = 0; i < roles.length; i++) {
 	    var roleOption = document.createElement("option");
 	    roleOption.value = roles[i];

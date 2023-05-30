@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.farm.domain.Member;
 import com.farm.repository.MemberRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class MemberService{
 
@@ -20,7 +22,7 @@ public class MemberService{
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
 		Long id = memberRepository.addMember(member);
 		//임시권한 부여
-		memberRepository.addRole(id, "temp");
+		memberRepository.addRole(id, "ROLE_TEMP");
 	}
 	
 	public List<Member> getAllMembers(){
@@ -49,5 +51,18 @@ public class MemberService{
 
 	public String getNameByEmail(String email) {
 		return memberRepository.getNameByEmail(email);
+	}
+
+	public String getAllRoles() {
+		List<String> options = memberRepository.getAllRoles();
+        ObjectMapper objectMapper = new ObjectMapper();
+		String roles;
+		try {
+			roles = objectMapper.writeValueAsString(options);
+			return roles;
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

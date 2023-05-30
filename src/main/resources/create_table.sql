@@ -22,9 +22,9 @@ CREATE TABLE IF NOT EXISTS roles (
     role VARCHAR(50) NOT NULL UNIQUE
 );
 
-INSERT INTO roles (role) values('admin');	
-INSERT INTO roles (role) values('worker');	
-INSERT INTO roles (role) values('temp');
+INSERT INTO roles (role) values('ROLE_ADMIN');	
+INSERT INTO roles (role) values('ROLE_WORKER');	
+INSERT INTO roles (role) values('ROLE_TEMP');
 
 CREATE TABLE user_roles (
     user_id BIGINT NOT NULL,
