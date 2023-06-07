@@ -43,10 +43,6 @@ public class ControllerConfig {
 	}
 	
 	
-	@Bean
-	public MyUserDetailsService myUserDetailsService() {
-		return new MyUserDetailsService();
-	}
 	
 	
 	

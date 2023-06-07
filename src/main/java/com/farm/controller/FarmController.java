@@ -28,7 +28,7 @@ public class FarmController {
 
 	@GetMapping(value="/")
 	public String loadMain() {		
-		return "main";
+		return "login";
 	}
 	@GetMapping(value="/add")
 	public String addFarmWorkRecord() {

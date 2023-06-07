@@ -16,41 +16,43 @@ import com.farm.service.MyUserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter  {
-    
-    @Autowired
-    private MyUserDetailsService userDetailsService;
-    
+	
+	 @Override
+	    protected void configure(HttpSecurity http) throws Exception {
+	        http
+	        	.csrf()
+	        		.disable()
+	            .authorizeRequests()
+	            	.antMatchers("/", "/login", "/register", "/main").permitAll()
+	            	.antMatchers("/add").hasAnyRole("ADMIN", "WORKER")
+	                .antMatchers("/manage").hasRole("ADMIN")
+	                .anyRequest().authenticated()
+	                .and()
+	            .logout()
+	                .logoutUrl("/logout")
+	                .logoutSuccessUrl("/")
+	        		.and()
+	        	.exceptionHandling()
+	            	.accessDeniedPage("/accessDenied");
+	    }
+	        
+	@Bean
+	public MyUserDetailsService myUserDetailsService() {
+		return new MyUserDetailsService();
+	}
+    	
+	@Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(myUserDetailsService());
+    }
+	
     @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
-    }
+    }   
     
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-                .antMatchers("/farm", "/farm/login").permitAll()
-                .antMatchers("/farm/manage").hasRole("sdfsdfs")
-//                .anyRequest().authenticated()
-                .and()
-            .formLogin()
-                .loginPage("/farm/login")
-                .defaultSuccessUrl("/")
-                .and()
-            .logout()
-                .logoutUrl("/farm/logout")
-                .logoutSuccessUrl("/")
-        		.and()
-        	.exceptionHandling()
-            	.accessDeniedPage("/login");
-    }
-    
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-    }
-    
+   
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

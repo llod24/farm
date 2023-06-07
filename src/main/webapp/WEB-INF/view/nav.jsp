@@ -3,7 +3,7 @@
 
 <nav class="navbar navbar-expand-lg" style="background-color: var(--bs-success-bg-subtle);">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/farm">Home</a>
+    <a class="navbar-brand" href="/farm/main">Home</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -33,6 +33,9 @@
 		    <c:when test="${empty sessionScope.name}">
 		      <li class="nav-item">
 		        <a class="nav-link active" aria-current="page" href="/farm/login">로그인</a>
+		      </li>
+		      <li class="nav-item">
+		        <a class="nav-link active" aria-current="page" href="/farm/register">회원가입</a>
 		      </li>
 		    </c:when>
 		    <c:otherwise>

@@ -12,12 +12,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -40,10 +40,10 @@ public class MemberController {
 	public String handleAddMember(HttpServletRequest request) {
 		
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
         String email = request.getParameter("email");
+        String password = request.getParameter("password");
         
-        Member member = new Member(username, password, email);
+        Member member = new Member(username, email, password);
 	    memberService.addMember(member);
 	    return "main";
 	}
@@ -58,9 +58,9 @@ public class MemberController {
 	}
 	
 	@PostMapping("/login")
-	public String processLogin(HttpServletRequest request, Model model) {
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
+	public String processLogin(@RequestParam("email") String email, @RequestParam("password") String password, 
+			HttpServletRequest request, Model model) {
+		System.out.println(email);
 		Long id = memberService.getIdByEmail(email);
 		String name = memberService.getNameByEmail(email);
 		Authentication authentication = new UsernamePasswordAuthenticationToken(email, password);
@@ -84,8 +84,8 @@ public class MemberController {
 	@PostMapping("/logout")
 	public String logout(HttpServletRequest request, HttpServletResponse response, 
 			Authentication authentication, SessionStatus sessionStatus) {
-        new SecurityContextLogoutHandler().logout(request, response, authentication);
-        sessionStatus.setComplete();
+//        new SecurityContextLogoutHandler().logout(request, response, authentication);
+//        sessionStatus.setComplete();
         return "main";
     }
 	
@@ -115,6 +115,9 @@ public class MemberController {
         return "redirect:/manage";
     }
 	
-	
+	@GetMapping(value="/accessDenied")
+	public String getMembers() {
+	    return "accessDenied";
+	}
 	
 }
