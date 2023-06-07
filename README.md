@@ -12,3 +12,5 @@
   5.3 temp 권한은 조회만 가능  
 6. 사용자 정의 기간 데이터 조회 - 미구현
 7. 데이터 시각화 기능 - 구현 완료
+
+배포 http://farmingsolutions.kro.kr/farm/
